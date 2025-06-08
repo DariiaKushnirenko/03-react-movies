@@ -1,10 +1,10 @@
-import SearchBar from "../SearchBar/SearchBar";
 import css from "./ErrorMessage.module.css";
 import { useState } from "react";
-import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
-import css from "./ErrorMessage.module.css";
-import type { Movie, MoviesHttpResponse } from "../types"; // або свій шлях
+import { fetchMovies} from "../../services/movieService";
+import type { Movie } from "../../types/movie";
+import MovieGrid from "../MovieGrid/MovieGrid";
+
 
 export default function ErrorMessage() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -13,11 +13,9 @@ export default function ErrorMessage() {
   const handleSearch = async (query: string) => {
     try {
       setIsError(false);
-      const response = await axios.get<MoviesHttpResponse>(
-        `https://api.themoviedb.org/3/search/movie=${query}`
-      );
-      setMovies(response.data.hits);
-    } catch (error) {
+      const results = await fetchMovies(query);
+      setMovies(results);
+    } catch  {
       setIsError(true);
     }
   };
@@ -26,7 +24,11 @@ export default function ErrorMessage() {
     <>
       <SearchBar onSubmit={handleSearch} />
       {isError && (
-        <p className={css.text}>There was an error, please try again...</p>
+        <>
+          <p className={css.text}>There was an error, please try again...</p>
+          {movies.length > 0 && <MovieGrid movies={movies} onSelect={() => {}} />}
+
+        </>
       )}
     </>
   );

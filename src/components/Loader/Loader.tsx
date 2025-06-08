@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import css from "./Loader.module.css";
 import SearchBar from "../SearchBar/SearchBar";
-
-import type { Movie, MoviesHttpResponse } from "./types"; // якщо є типи
+import { fetchMovies } from "../../services/movieService";
+import type { Movie } from "../../types/movie";
+import MovieGrid from "../MovieGrid/MovieGrid";
 
 export default function Loader() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -12,10 +12,8 @@ export default function Loader() {
   const handleSearch = async (query: string) => {
     try {
       setIsLoading(true);
-      const response = await axios.get<MoviesHttpResponse>(
-        `https://api.themoviedb.org/3/search/movie=${query}`
-      );
-      setMovies(response.data.hits);
+      const results = await fetchMovies(query);
+      setMovies(results);
     } catch (error) {
       console.error("Error fetching movies:", error);
     } finally {
@@ -27,6 +25,7 @@ export default function Loader() {
     <>
       <SearchBar onSubmit={handleSearch} />
       {isLoading && <p className={css.text}>Loading movies, please wait...</p>}
+      {<MovieGrid movies={movies} onSelect={() => {}} />}
     </>
   );
 }
