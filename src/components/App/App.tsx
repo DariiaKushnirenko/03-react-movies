@@ -7,6 +7,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { fetchMovies } from "../../services/movieService";
 import type { Movie } from "../../types/movie";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -57,6 +58,7 @@ export default function App() {
       {selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
       )}
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }

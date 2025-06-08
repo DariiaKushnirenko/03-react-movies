@@ -43,7 +43,7 @@ export default function MovieModal ({movie, onClose}: MovieModalProps) {
           &times;
         </button>
         <img
-          src="https://image.tmdb.org/t/p/original${movie.backdrop_path}"
+          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
           alt={movie.title}
           className={css.image}
         />
@@ -54,7 +54,7 @@ export default function MovieModal ({movie, onClose}: MovieModalProps) {
             <strong>Release Date:</strong> {movie.release_date}
           </p>
           <p>
-            <strong>Rating:</strong> {movie.vote_average}/10
+            <strong>Rating:</strong> movie_vote_average/10
           </p>
         </div>
       </div>
